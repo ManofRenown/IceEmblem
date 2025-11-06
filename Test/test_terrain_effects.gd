@@ -28,7 +28,7 @@ func run_test() -> void:
 
 
 func _setup_test_environment() -> void:
-	log("Setting up test environment...")
+	log_message("Setting up test environment...")
 
 	# Create TileMapManager
 	tilemap_manager = TileMapManager.new()
@@ -37,13 +37,13 @@ func _setup_test_environment() -> void:
 
 
 func _cleanup_test_environment() -> void:
-	log("Cleaning up test environment...")
+	log_message("Cleaning up test environment...")
 	if tilemap_manager:
 		tilemap_manager.queue_free()
 
 
 func test_terrain_type_creation() -> void:
-	log("\n--- Test: Terrain Type Creation ---")
+	log_message("\n--- Test: Terrain Type Creation ---")
 
 	var terrain = TerrainType.new("Test Terrain", 2, 3, 10, true)
 
@@ -55,7 +55,7 @@ func test_terrain_type_creation() -> void:
 
 
 func test_terrain_definitions() -> void:
-	log("\n--- Test: Terrain Definitions ---")
+	log_message("\n--- Test: Terrain Definitions ---")
 
 	# Test that all expected terrain types are defined
 	var terrain_types = tilemap_manager.terrain_types
@@ -100,7 +100,7 @@ func test_terrain_definitions() -> void:
 
 
 func test_terrain_passability() -> void:
-	log("\n--- Test: Terrain Passability ---")
+	log_message("\n--- Test: Terrain Passability ---")
 
 	# Test passable terrains
 	var terrain_types = tilemap_manager.terrain_types
@@ -117,7 +117,7 @@ func test_terrain_passability() -> void:
 
 
 func test_terrain_movement_costs() -> void:
-	log("\n--- Test: Terrain Movement Costs ---")
+	log_message("\n--- Test: Terrain Movement Costs ---")
 
 	var terrain_types = tilemap_manager.terrain_types
 
@@ -141,7 +141,7 @@ func test_terrain_movement_costs() -> void:
 
 
 func test_terrain_defense_bonuses() -> void:
-	log("\n--- Test: Terrain Defense Bonuses ---")
+	log_message("\n--- Test: Terrain Defense Bonuses ---")
 
 	var terrain_types = tilemap_manager.terrain_types
 
@@ -162,7 +162,7 @@ func test_terrain_defense_bonuses() -> void:
 
 
 func test_unit_terrain_integration() -> void:
-	log("\n--- Test: Unit-Terrain Integration ---")
+	log_message("\n--- Test: Unit-Terrain Integration ---")
 
 	# Create a test unit
 	var unit = Unit.new()

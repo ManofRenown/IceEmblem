@@ -32,7 +32,7 @@ func run_test() -> void:
 
 
 func _setup_test_environment() -> void:
-	log("Setting up test environment...")
+	log_message("Setting up test environment...")
 
 	# Create TileMapManager
 	tilemap_manager = TileMapManager.new()
@@ -63,7 +63,7 @@ func _setup_test_environment() -> void:
 
 
 func _cleanup_test_environment() -> void:
-	log("Cleaning up test environment...")
+	log_message("Cleaning up test environment...")
 	if attacker:
 		attacker.queue_free()
 	if defender:
@@ -73,7 +73,7 @@ func _cleanup_test_environment() -> void:
 
 
 func test_basic_attack() -> void:
-	log("\n--- Test: Basic Attack ---")
+	log_message("\n--- Test: Basic Attack ---")
 
 	var initial_health = defender.current_health
 	assert_equal(attacker.has_attacked_this_turn, false, "Attacker should not have attacked yet")
@@ -86,7 +86,7 @@ func test_basic_attack() -> void:
 
 
 func test_damage_calculation() -> void:
-	log("\n--- Test: Damage Calculation ---")
+	log_message("\n--- Test: Damage Calculation ---")
 
 	# Reset units
 	attacker.reset_turn()
@@ -100,7 +100,7 @@ func test_damage_calculation() -> void:
 
 
 func test_defense_reduces_damage() -> void:
-	log("\n--- Test: Defense Reduces Damage ---")
+	log_message("\n--- Test: Defense Reduces Damage ---")
 
 	# Create a high defense unit
 	var tank = Unit.new()
@@ -126,7 +126,7 @@ func test_defense_reduces_damage() -> void:
 
 
 func test_minimum_damage() -> void:
-	log("\n--- Test: Minimum Damage ---")
+	log_message("\n--- Test: Minimum Damage ---")
 
 	# Create a unit with defense higher than attack
 	var fortress = Unit.new()
@@ -149,7 +149,7 @@ func test_minimum_damage() -> void:
 
 
 func test_attack_range() -> void:
-	log("\n--- Test: Attack Range ---")
+	log_message("\n--- Test: Attack Range ---")
 
 	# Reset units
 	attacker.reset_turn()
@@ -163,7 +163,7 @@ func test_attack_range() -> void:
 
 
 func test_unit_death() -> void:
-	log("\n--- Test: Unit Death ---")
+	log_message("\n--- Test: Unit Death ---")
 
 	# Create a weak unit
 	var weak_unit = Unit.new()
@@ -191,7 +191,7 @@ func test_unit_death() -> void:
 
 
 func test_attack_dead_unit() -> void:
-	log("\n--- Test: Attack Dead Unit ---")
+	log_message("\n--- Test: Attack Dead Unit ---")
 
 	# Create and kill a unit
 	var dead_unit = Unit.new()
@@ -214,7 +214,7 @@ func test_attack_dead_unit() -> void:
 
 
 func test_terrain_defense_bonus() -> void:
-	log("\n--- Test: Terrain Defense Bonus ---")
+	log_message("\n--- Test: Terrain Defense Bonus ---")
 
 	# Manually set terrain defense bonus
 	defender.reset_turn()

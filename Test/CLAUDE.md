@@ -42,7 +42,7 @@ func run_test() -> void:
 
 
 func _setup_test_environment() -> void:
-	log("Setting up test environment...")
+	log_message("Setting up test environment...")
 	# Create any nodes, resources, or state needed for testing
 	# Example:
 	# var unit = Unit.new()
@@ -50,7 +50,7 @@ func _setup_test_environment() -> void:
 
 
 func _cleanup_test_environment() -> void:
-	log("Cleaning up test environment...")
+	log_message("Cleaning up test environment...")
 	# Free any created nodes
 	# Example:
 	# if unit:
@@ -58,7 +58,7 @@ func _cleanup_test_environment() -> void:
 
 
 func test_feature_one() -> void:
-	log("\n--- Test: Feature One ---")
+	log_message("\n--- Test: Feature One ---")
 
 	# Arrange - set up test conditions
 	var expected_value = 10
@@ -141,7 +141,7 @@ If your test needs to wait for frames or timers:
 
 ```gdscript
 func test_async_feature() -> void:
-	log("\n--- Test: Async Feature ---")
+	log_message("\n--- Test: Async Feature ---")
 
 	var unit = Unit.new()
 	add_child(unit)
@@ -157,12 +157,12 @@ func test_async_feature() -> void:
 
 ### 4. Logging
 
-Use `log(message)` to output information during test execution:
+Use `log_message(message)` to output information during test execution:
 
 ```gdscript
-log("Setting up player unit...")
-log("Moving unit from tile (0,0) to tile (5,5)...")
-log("Note: This test requires TileMapManager to be present")
+log_message("Setting up player unit...")
+log_message("Moving unit from tile (0,0) to tile (5,5)...")
+log_message("Note: This test requires TileMapManager to be present")
 ```
 
 Logs appear in:
@@ -204,7 +204,7 @@ func run_test() -> void:
 
 
 func _setup_test_environment() -> void:
-	log("Setting up test environment...")
+	log_message("Setting up test environment...")
 
 	inventory = Inventory.new()
 	inventory.max_capacity = 10
@@ -220,7 +220,7 @@ func _setup_test_environment() -> void:
 
 
 func _cleanup_test_environment() -> void:
-	log("Cleaning up test environment...")
+	log_message("Cleaning up test environment...")
 	if inventory:
 		inventory.queue_free()
 	if item1:
@@ -230,7 +230,7 @@ func _cleanup_test_environment() -> void:
 
 
 func test_add_item() -> void:
-	log("\n--- Test: Add Item ---")
+	log_message("\n--- Test: Add Item ---")
 
 	var success = inventory.add_item(item1)
 
@@ -239,7 +239,7 @@ func test_add_item() -> void:
 
 
 func test_remove_item() -> void:
-	log("\n--- Test: Remove Item ---")
+	log_message("\n--- Test: Remove Item ---")
 
 	inventory.add_item(item1)
 	var success = inventory.remove_item(item1)
@@ -249,7 +249,7 @@ func test_remove_item() -> void:
 
 
 func test_inventory_capacity() -> void:
-	log("\n--- Test: Inventory Capacity ---")
+	log_message("\n--- Test: Inventory Capacity ---")
 
 	# Fill inventory to capacity
 	for i in range(10):
@@ -262,7 +262,7 @@ func test_inventory_capacity() -> void:
 
 
 func test_item_stacking() -> void:
-	log("\n--- Test: Item Stacking ---")
+	log_message("\n--- Test: Item Stacking ---")
 
 	inventory.add_item(item1)
 	inventory.add_item(item1)  # Same stackable item

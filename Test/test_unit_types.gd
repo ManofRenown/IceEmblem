@@ -28,7 +28,7 @@ func run_test() -> void:
 
 
 func _setup_test_environment() -> void:
-	log("Setting up test environment...")
+	log_message("Setting up test environment...")
 
 	# Create TileMapManager
 	tilemap_manager = TileMapManager.new()
@@ -37,13 +37,13 @@ func _setup_test_environment() -> void:
 
 
 func _cleanup_test_environment() -> void:
-	log("Cleaning up test environment...")
+	log_message("Cleaning up test environment...")
 	if tilemap_manager:
 		tilemap_manager.queue_free()
 
 
 func test_bulkhead_stats() -> void:
-	log("\n--- Test: BulkHead Stats ---")
+	log_message("\n--- Test: BulkHead Stats ---")
 
 	var bulkhead = BulkHead.new()
 	add_child(bulkhead)
@@ -57,13 +57,13 @@ func test_bulkhead_stats() -> void:
 	assert_equal(bulkhead.movement_range, 2, "BulkHead should have 2 movement (slow)")
 	assert_equal(bulkhead.attack_range, 1, "BulkHead should be melee (range 1)")
 
-	log("BulkHead is a slow, tanky bruiser with high HP, attack, and defense")
+	log_message("BulkHead is a slow, tanky bruiser with high HP, attack, and defense")
 
 	bulkhead.queue_free()
 
 
 func test_sharpshooter_stats() -> void:
-	log("\n--- Test: Sharpshooter Stats ---")
+	log_message("\n--- Test: Sharpshooter Stats ---")
 
 	var sharpshooter = Sharpshooter.new()
 	add_child(sharpshooter)
@@ -76,13 +76,13 @@ func test_sharpshooter_stats() -> void:
 	assert_equal(sharpshooter.movement_range, 4, "Sharpshooter should have 4 movement")
 	assert_equal(sharpshooter.attack_range, 4, "Sharpshooter should have long range (4)")
 
-	log("Sharpshooter is a glass cannon with long range but low HP and defense")
+	log_message("Sharpshooter is a glass cannon with long range but low HP and defense")
 
 	sharpshooter.queue_free()
 
 
 func test_privateer_stats() -> void:
-	log("\n--- Test: Privateer Stats ---")
+	log_message("\n--- Test: Privateer Stats ---")
 
 	var privateer = Privateer.new()
 	add_child(privateer)
@@ -95,13 +95,13 @@ func test_privateer_stats() -> void:
 	assert_equal(privateer.movement_range, 4, "Privateer should have 4 movement (balanced)")
 	assert_equal(privateer.attack_range, 2, "Privateer should have medium range (2)")
 
-	log("Privateer is balanced across all stats - jack of all trades")
+	log_message("Privateer is balanced across all stats - jack of all trades")
 
 	privateer.queue_free()
 
 
 func test_cleaner_stats() -> void:
-	log("\n--- Test: Cleaner Stats ---")
+	log_message("\n--- Test: Cleaner Stats ---")
 
 	var cleaner = Cleaner.new()
 	add_child(cleaner)
@@ -114,13 +114,13 @@ func test_cleaner_stats() -> void:
 	assert_equal(cleaner.movement_range, 6, "Cleaner should have 6 movement (very high)")
 	assert_equal(cleaner.attack_range, 1, "Cleaner should be melee (range 1)")
 
-	log("Cleaner is a mobile assassin with high movement and damage")
+	log_message("Cleaner is a mobile assassin with high movement and damage")
 
 	cleaner.queue_free()
 
 
 func test_unit_type_differences() -> void:
-	log("\n--- Test: Unit Type Differences ---")
+	log_message("\n--- Test: Unit Type Differences ---")
 
 	var bulkhead = BulkHead.new()
 	var sharpshooter = Sharpshooter.new()
@@ -163,7 +163,7 @@ func test_unit_type_differences() -> void:
 
 
 func test_team_allegiance() -> void:
-	log("\n--- Test: Team Allegiance ---")
+	log_message("\n--- Test: Team Allegiance ---")
 
 	var player_unit = BulkHead.new()
 	add_child(player_unit)

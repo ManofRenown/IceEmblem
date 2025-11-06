@@ -34,21 +34,21 @@ func start_test() -> void:
 	failed_assertions.clear()
 	test_log.clear()
 
-	log("=== Starting Test: %s ===" % test_name)
+	log_message("=== Starting Test: %s ===" % test_name)
 	if test_description:
-		log("Description: %s" % test_description)
+		log_message("Description: %s" % test_description)
 
 	run_test()
 
 	is_running = false
 	is_complete = true
 
-	log("=== Test Complete: %s ===" % test_name)
-	log("Passed: %d | Failed: %d" % [assertions_passed, assertions_failed])
+	log_message("=== Test Complete: %s ===" % test_name)
+	log_message("Passed: %d | Failed: %d" % [assertions_passed, assertions_failed])
 
 
-## Log a message
-func log(message: String) -> void:
+## Log a test message (renamed from log to avoid conflict with built-in math function)
+func log_message(message: String) -> void:
 	test_log.append(message)
 	print("[%s] %s" % [test_name, message])
 
@@ -58,13 +58,13 @@ func assert_true(condition: bool, message: String = "") -> bool:
 	if condition:
 		assertions_passed += 1
 		var msg = ("✓ PASS: %s" % message) if message else "Assertion passed"
-		log(msg)
+		log_message(msg)
 		return true
 	else:
 		assertions_failed += 1
 		var fail_msg = ("✗ FAIL: %s" % message) if message else "Assertion failed"
 		failed_assertions.append(fail_msg)
-		log(fail_msg)
+		log_message(fail_msg)
 		return false
 
 

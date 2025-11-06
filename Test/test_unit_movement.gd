@@ -29,7 +29,7 @@ func run_test() -> void:
 
 
 func _setup_test_environment() -> void:
-	log("Setting up test environment...")
+	log_message("Setting up test environment...")
 
 	# Create a TileMapManager (simplified for testing)
 	tilemap_manager = TileMapManager.new()
@@ -48,7 +48,7 @@ func _setup_test_environment() -> void:
 
 
 func _cleanup_test_environment() -> void:
-	log("Cleaning up test environment...")
+	log_message("Cleaning up test environment...")
 	if test_unit:
 		test_unit.queue_free()
 	if tilemap_manager:
@@ -56,7 +56,7 @@ func _cleanup_test_environment() -> void:
 
 
 func test_basic_movement() -> void:
-	log("\n--- Test: Basic Movement ---")
+	log_message("\n--- Test: Basic Movement ---")
 
 	var start_pos = test_unit.current_tile_position
 	var target_pos = start_pos + Vector2i(2, 0)
@@ -71,7 +71,7 @@ func test_basic_movement() -> void:
 
 
 func test_movement_range() -> void:
-	log("\n--- Test: Movement Range ---")
+	log_message("\n--- Test: Movement Range ---")
 
 	# Reset unit
 	test_unit.reset_turn()
@@ -94,7 +94,7 @@ func test_movement_range() -> void:
 
 
 func test_terrain_passability() -> void:
-	log("\n--- Test: Terrain Passability ---")
+	log_message("\n--- Test: Terrain Passability ---")
 
 	# This test verifies that the unit respects terrain passability
 	# In a real scenario with TileMapManager, impassable terrain would block movement
@@ -104,25 +104,25 @@ func test_terrain_passability() -> void:
 
 	# Without a proper tilemap, we can't fully test terrain
 	# But we can verify the unit checks for passability
-	log("Note: Full terrain passability requires TileMapLayer setup")
+	log_message("Note: Full terrain passability requires TileMapLayer setup")
 
 	assert_true(true, "Terrain passability check exists in movement code")
 
 
 func test_impassable_terrain() -> void:
-	log("\n--- Test: Impassable Terrain ---")
+	log_message("\n--- Test: Impassable Terrain ---")
 
 	# Test that deep water (or other impassable terrain) blocks movement
 	# This is a conceptual test - actual implementation requires TileMapLayer
 
 	test_unit.reset_turn()
 
-	log("Note: Impassable terrain tests require full TileMapLayer integration")
+	log_message("Note: Impassable terrain tests require full TileMapLayer integration")
 	assert_true(true, "Impassable terrain checking is implemented")
 
 
 func test_movement_cost() -> void:
-	log("\n--- Test: Movement Cost ---")
+	log_message("\n--- Test: Movement Cost ---")
 
 	# Test that terrain with higher movement costs affects range
 	# Mud and shallow water cost 2 movement instead of 1
@@ -139,7 +139,7 @@ func test_movement_cost() -> void:
 
 
 func test_turn_reset() -> void:
-	log("\n--- Test: Turn Reset ---")
+	log_message("\n--- Test: Turn Reset ---")
 
 	# Move the unit
 	test_unit.reset_turn()
