@@ -57,11 +57,12 @@ func log(message: String) -> void:
 func assert_true(condition: bool, message: String = "") -> bool:
 	if condition:
 		assertions_passed += 1
-		log("✓ PASS: %s" % message if message else "Assertion passed")
+		var msg = ("✓ PASS: %s" % message) if message else "Assertion passed"
+		log(msg)
 		return true
 	else:
 		assertions_failed += 1
-		var fail_msg = "✗ FAIL: %s" % message if message else "Assertion failed"
+		var fail_msg = ("✗ FAIL: %s" % message) if message else "Assertion failed"
 		failed_assertions.append(fail_msg)
 		log(fail_msg)
 		return false
@@ -69,26 +70,27 @@ func assert_true(condition: bool, message: String = "") -> bool:
 
 ## Assert that a condition is false
 func assert_false(condition: bool, message: String = "") -> bool:
-	return assert_true(not condition, message if message else "Expected false")
+	var msg = message if message else "Expected false"
+	return assert_true(not condition, msg)
 
 
 ## Assert that two values are equal
 func assert_equal(actual, expected, message: String = "") -> bool:
 	var is_equal = actual == expected
-	var msg = message if message else "Expected %s, got %s" % [expected, actual]
+	var msg = message if message else ("Expected %s, got %s" % [expected, actual])
 	return assert_true(is_equal, msg)
 
 
 ## Assert that two values are not equal
 func assert_not_equal(actual, expected, message: String = "") -> bool:
 	var is_not_equal = actual != expected
-	var msg = message if message else "Expected not %s, got %s" % [expected, actual]
+	var msg = message if message else ("Expected not %s, got %s" % [expected, actual])
 	return assert_true(is_not_equal, msg)
 
 
 ## Assert that a value is null
 func assert_null(value, message: String = "") -> bool:
-	var msg = message if message else "Expected null, got %s" % value
+	var msg = message if message else ("Expected null, got %s" % value)
 	return assert_true(value == null, msg)
 
 
@@ -100,31 +102,31 @@ func assert_not_null(value, message: String = "") -> bool:
 
 ## Assert that a value is greater than another
 func assert_greater(actual, expected, message: String = "") -> bool:
-	var msg = message if message else "Expected %s > %s" % [actual, expected]
+	var msg = message if message else ("Expected %s > %s" % [actual, expected])
 	return assert_true(actual > expected, msg)
 
 
 ## Assert that a value is less than another
 func assert_less(actual, expected, message: String = "") -> bool:
-	var msg = message if message else "Expected %s < %s" % [actual, expected]
+	var msg = message if message else ("Expected %s < %s" % [actual, expected])
 	return assert_true(actual < expected, msg)
 
 
 ## Assert that a value is greater than or equal to another
 func assert_greater_or_equal(actual, expected, message: String = "") -> bool:
-	var msg = message if message else "Expected %s >= %s" % [actual, expected]
+	var msg = message if message else ("Expected %s >= %s" % [actual, expected])
 	return assert_true(actual >= expected, msg)
 
 
 ## Assert that a value is less than or equal to another
 func assert_less_or_equal(actual, expected, message: String = "") -> bool:
-	var msg = message if message else "Expected %s <= %s" % [actual, expected]
+	var msg = message if message else ("Expected %s <= %s" % [actual, expected])
 	return assert_true(actual <= expected, msg)
 
 
 ## Assert that a value is within a range
 func assert_in_range(value, min_val, max_val, message: String = "") -> bool:
-	var msg = message if message else "Expected %s in range [%s, %s]" % [value, min_val, max_val]
+	var msg = message if message else ("Expected %s in range [%s, %s]" % [value, min_val, max_val])
 	return assert_true(value >= min_val and value <= max_val, msg)
 
 
