@@ -90,9 +90,9 @@ func generate_final_report() -> void:
 	var report_lines: Array[String] = []
 
 	# Header
-	report_lines.append("=" * 80)
+	report_lines.append("=".repeat(80))
 	report_lines.append("TEST SUITE RESULTS")
-	report_lines.append("=" * 80)
+	report_lines.append("=".repeat(80))
 	report_lines.append("")
 	report_lines.append("Timestamp: %s" % Time.get_datetime_string_from_system())
 	report_lines.append("Tests Run: %d" % tests_completed)
@@ -114,9 +114,9 @@ func generate_final_report() -> void:
 		report_lines.append("✗ SOME TESTS FAILED")
 
 	report_lines.append("")
-	report_lines.append("-" * 80)
+	report_lines.append("-".repeat(80))
 	report_lines.append("INDIVIDUAL TEST RESULTS")
-	report_lines.append("-" * 80)
+	report_lines.append("-".repeat(80))
 
 	# Individual test results
 	for result in all_results:
@@ -135,22 +135,22 @@ func generate_final_report() -> void:
 				report_lines.append("    - %s" % failed)
 
 	report_lines.append("")
-	report_lines.append("=" * 80)
+	report_lines.append("=".repeat(80))
 	report_lines.append("DETAILED LOGS")
-	report_lines.append("=" * 80)
+	report_lines.append("=".repeat(80))
 
 	# Detailed logs for each test
 	for result in all_results:
 		report_lines.append("")
 		report_lines.append("[%s]" % result["name"])
-		report_lines.append("-" * 80)
+		report_lines.append("-".repeat(80))
 		for log_line in result["log"]:
 			report_lines.append(log_line)
 
 	report_lines.append("")
-	report_lines.append("=" * 80)
+	report_lines.append("=".repeat(80))
 	report_lines.append("END OF REPORT")
-	report_lines.append("=" * 80)
+	report_lines.append("=".repeat(80))
 
 	# Print to console
 	for line in report_lines:
