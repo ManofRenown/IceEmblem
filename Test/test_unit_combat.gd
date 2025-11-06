@@ -216,14 +216,16 @@ func test_attack_dead_unit() -> void:
 func test_terrain_defense_bonus() -> void:
 	log_message("\n--- Test: Terrain Defense Bonus ---")
 
-	# Manually set terrain defense bonus
+	# Reset and position units first
 	defender.reset_turn()
 	defender.current_health = defender.max_health
-	defender.current_terrain_defense_bonus = 5  # Simulate defensive terrain
 
 	attacker.reset_turn()
 	attacker.snap_to_tile(Vector2i(0, 0))
 	defender.snap_to_tile(Vector2i(1, 0))
+
+	# Set terrain defense bonus AFTER snap_to_tile (which calls _update_terrain_bonuses)
+	defender.current_terrain_defense_bonus = 5  # Simulate defensive terrain
 
 	var effective_defense = defender.get_effective_defense()
 	var expected_defense = defender.defense + 5

@@ -57,8 +57,7 @@ func log_message(message: String) -> void:
 func assert_true(condition: bool, message: String = "") -> bool:
 	if condition:
 		assertions_passed += 1
-		var msg = ("✓ PASS: %s" % message) if message else "Assertion passed"
-		log_message(msg)
+		# Don't log passing assertions - only failures are logged
 		return true
 	else:
 		assertions_failed += 1
