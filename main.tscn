@@ -1,3 +1,77 @@
-[gd_scene format=3 uid="uid://d1hqxy2hnxuha"]
+[gd_scene load_steps=3 format=4 uid="uid://d1hqxy2hnxuha"]
 
-[node name="main" type="Node2D"]
+[ext_resource type="Script" path="res://Scripts/game_controller.gd" id="1_controller"]
+[ext_resource type="Script" path="res://Scripts/turn_manager.gd" id="2_turn_manager"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_controller")
+
+[node name="TurnManager" type="Node" parent="."]
+script = ExtResource("2_turn_manager")
+
+[node name="MapContainer" type="Node2D" parent="."]
+
+[node name="UnitsContainer" type="Node2D" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TurnInfo" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Turn 1 - PLAYER TURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndTurnButton" type="Button" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "End Turn"
+
+[node name="UnitStats" type="Panel" parent="UI/HUD"]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 60.0
+offset_right = 250.0
+offset_bottom = 200.0
+
+[node name="StatsLabel" type="Label" parent="UI/HUD/UnitStats"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Player Units: 4
+Enemy Units: 4
+
+Friendly forces ready!"
+
+[connection signal="pressed" from="UI/HUD/EndTurnButton" to="." method="_on_end_turn_pressed"]
