@@ -4,6 +4,13 @@ extends Node2D
 ## Base class for all units in the game (player units, enemies, NPCs, etc.)
 ## This class provides core functionality for movement, combat, and stats management.
 
+# Team allegiance enum
+enum Team {
+	PLAYER,
+	ENEMY,
+	NEUTRAL
+}
+
 # Signals for events that other systems can react to
 signal health_changed(new_health: int, max_health: int)
 signal unit_died(unit: Unit)
@@ -17,6 +24,10 @@ signal attack_performed(target: Unit, damage_dealt: int)
 @export var attack_damage: int = 5
 @export var defense: int = 2
 @export var movement_range: int = 5  # How many tiles the unit can move
+@export var attack_range: int = 1  # How many tiles away the unit can attack (1 = melee)
+
+@export_group("Team")
+@export var team: Team = Team.PLAYER
 
 @export_group("Tile Configuration")
 @export var tile_size: Vector2i = Vector2i(64, 64)  # Size of each tile in pixels
@@ -106,10 +117,10 @@ func attack(target: Unit) -> int:
 		push_warning("Unit has already attacked this turn")
 		return 0
 
-	# Check if target is within attack range (adjacent tiles for now)
+	# Check if target is within attack range
 	var distance = _calculate_tile_distance(current_tile_position, target.current_tile_position)
-	if distance > 1:
-		push_warning("Target is not within attack range")
+	if distance > attack_range:
+		push_warning("Target is not within attack range (distance: %d, max: %d)" % [distance, attack_range])
 		return 0
 
 	# Calculate damage (attack - defense, minimum 1)
@@ -191,9 +202,9 @@ func is_tile_in_movement_range(tile: Vector2i) -> bool:
 	return _calculate_tile_distance(current_tile_position, tile) <= movement_range
 
 
-## Check if a tile is within attack range (adjacent tiles)
+## Check if a tile is within attack range
 func is_tile_in_attack_range(tile: Vector2i) -> bool:
-	return _calculate_tile_distance(current_tile_position, tile) == 1
+	return _calculate_tile_distance(current_tile_position, tile) <= attack_range
 
 
 ## Get unit stats as a dictionary (useful for UI or save systems)
@@ -204,6 +215,8 @@ func get_stats() -> Dictionary:
 		"attack_damage": attack_damage,
 		"defense": defense,
 		"movement_range": movement_range,
+		"attack_range": attack_range,
+		"team": team,
 		"is_alive": is_alive,
 		"tile_position": current_tile_position
 	}

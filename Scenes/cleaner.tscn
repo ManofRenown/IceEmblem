@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=4 uid="uid://c3f5m9p2kxr8w"]
+
+[ext_resource type="Script" path="res://Scripts/cleaner.gd" id="1_cleaner"]
+[ext_resource type="Texture2D" uid="uid://ckqe5rkgmw4ke" path="res://icon.svg" id="2_icon"]
+
+[node name="Cleaner" type="Node2D"]
+script = ExtResource("1_cleaner")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.8, 0.8, 0.2, 1)
+texture = ExtResource("2_icon")

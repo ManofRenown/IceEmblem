@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=4 uid="uid://dhm4s8n2vw6rx"]
+
+[ext_resource type="Script" path="res://Scripts/privateer.gd" id="1_privateer"]
+[ext_resource type="Texture2D" uid="uid://ckqe5rkgmw4ke" path="res://icon.svg" id="2_icon"]
+
+[node name="Privateer" type="Node2D"]
+script = ExtResource("1_privateer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.2, 0.2, 0.8, 1)
+texture = ExtResource("2_icon")
