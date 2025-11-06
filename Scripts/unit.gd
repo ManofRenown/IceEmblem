@@ -39,6 +39,10 @@ var is_alive: bool = true
 var has_moved_this_turn: bool = false
 var has_attacked_this_turn: bool = false
 
+# Terrain modifiers (updated when unit moves)
+var current_terrain_defense_bonus: int = 0
+var current_terrain_avoid_bonus: int = 0
+
 func _ready() -> void:
 	# Initialize health to max
 	current_health = max_health
@@ -48,6 +52,9 @@ func _ready() -> void:
 
 	# Snap to tile grid
 	snap_to_tile(current_tile_position)
+
+	# Update terrain bonuses after positioning
+	_update_terrain_bonuses()
 
 
 ## Convert world position to tile coordinates
@@ -70,6 +77,7 @@ func tile_to_world_position(tile_pos: Vector2i) -> Vector2:
 func snap_to_tile(tile_pos: Vector2i) -> void:
 	global_position = tile_to_world_position(tile_pos)
 	current_tile_position = tile_pos
+	_update_terrain_bonuses()
 
 
 ## Move the unit to a target tile
@@ -83,16 +91,28 @@ func move_to_tile(target_tile: Vector2i) -> bool:
 		push_warning("Unit has already moved this turn")
 		return false
 
-	# Check if target is within movement range
-	var distance = _calculate_tile_distance(current_tile_position, target_tile)
-	if distance > movement_range:
-		push_warning("Target tile is out of movement range (distance: %d, max: %d)" % [distance, movement_range])
-		return false
+	# Check terrain passability via TileMapManager
+	if TileMapManager.instance:
+		if not TileMapManager.instance.is_tile_passable(target_tile):
+			push_warning("Target tile is not passable")
+			return false
+
+		# Check if tile is within movement range considering terrain costs
+		var path_cost = TileMapManager.instance.calculate_path_cost(current_tile_position, target_tile, movement_range)
+		if path_cost < 0:
+			push_warning("Target tile is not reachable within movement range")
+			return false
+	else:
+		# Fallback if no TileMapManager - use simple distance check
+		var distance = _calculate_tile_distance(current_tile_position, target_tile)
+		if distance > movement_range:
+			push_warning("Target tile is out of movement range (distance: %d, max: %d)" % [distance, movement_range])
+			return false
 
 	# Store old position for signal
 	var old_position = current_tile_position
 
-	# Move to new tile
+	# Move to new tile (this will also update terrain bonuses via snap_to_tile)
 	snap_to_tile(target_tile)
 	has_moved_this_turn = true
 
@@ -123,8 +143,10 @@ func attack(target: Unit) -> int:
 		push_warning("Target is not within attack range (distance: %d, max: %d)" % [distance, attack_range])
 		return 0
 
-	# Calculate damage (attack - defense, minimum 1)
-	var damage_dealt = max(1, attack_damage - target.defense)
+	# Calculate damage (attack - effective defense, minimum 1)
+	# Effective defense includes terrain bonuses
+	var target_effective_defense = target.get_effective_defense()
+	var damage_dealt = max(1, attack_damage - target_effective_defense)
 
 	# Apply damage to target
 	target.take_damage(damage_dealt, self)
@@ -207,6 +229,36 @@ func is_tile_in_attack_range(tile: Vector2i) -> bool:
 	return _calculate_tile_distance(current_tile_position, tile) <= attack_range
 
 
+## Update terrain bonuses based on current tile position
+func _update_terrain_bonuses() -> void:
+	if not TileMapManager.instance:
+		# No TileMapManager available, reset bonuses
+		current_terrain_defense_bonus = 0
+		current_terrain_avoid_bonus = 0
+		return
+
+	# Query terrain bonuses from TileMapManager
+	current_terrain_defense_bonus = TileMapManager.instance.get_defense_bonus(current_tile_position)
+	current_terrain_avoid_bonus = TileMapManager.instance.get_avoid_bonus(current_tile_position)
+
+
+## Get effective defense (base defense + terrain bonus)
+func get_effective_defense() -> int:
+	return defense + current_terrain_defense_bonus
+
+
+## Get effective avoid (for future implementation)
+func get_effective_avoid() -> int:
+	return current_terrain_avoid_bonus
+
+
+## Get current terrain information
+func get_current_terrain() -> TerrainType:
+	if TileMapManager.instance:
+		return TileMapManager.instance.get_terrain_at_tile(current_tile_position)
+	return null
+
+
 ## Get unit stats as a dictionary (useful for UI or save systems)
 func get_stats() -> Dictionary:
 	return {
@@ -214,9 +266,12 @@ func get_stats() -> Dictionary:
 		"current_health": current_health,
 		"attack_damage": attack_damage,
 		"defense": defense,
+		"effective_defense": get_effective_defense(),
 		"movement_range": movement_range,
 		"attack_range": attack_range,
 		"team": team,
 		"is_alive": is_alive,
-		"tile_position": current_tile_position
+		"tile_position": current_tile_position,
+		"terrain_defense_bonus": current_terrain_defense_bonus,
+		"terrain_avoid_bonus": current_terrain_avoid_bonus
 	}
