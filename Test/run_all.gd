@@ -127,8 +127,47 @@ func generate_final_report() -> void:
 	else:
 		report_lines.append("✗ SOME TESTS FAILED")
 
-	# Failure summary (if any failures)
-	if total_failed > 0:
+	# Only show failed tests in individual results
+	var has_failures = total_failed > 0
+	if has_failures:
+		report_lines.append("")
+		report_lines.append("-".repeat(80))
+		report_lines.append("FAILED TESTS (Individual Results)")
+		report_lines.append("-".repeat(80))
+
+		# Individual test results - ONLY FAILURES
+		for result in all_results:
+			if not result["success"]:
+				report_lines.append("")
+				report_lines.append("Test: %s" % result["name"])
+				if result["description"]:
+					report_lines.append("  Description: %s" % result["description"])
+				report_lines.append("  Assertions Passed: %d" % result["passed"])
+				report_lines.append("  Assertions Failed: %d" % result["failed"])
+				report_lines.append("  Status: ✗ FAILED")
+
+				# Show failed assertions
+				if result["failed"] > 0:
+					report_lines.append("  Failed Assertions:")
+					for failed in result["failed_assertions"]:
+						report_lines.append("    - %s" % failed)
+
+		report_lines.append("")
+		report_lines.append("=".repeat(80))
+		report_lines.append("DETAILED LOGS (Failed Tests Only)")
+		report_lines.append("=".repeat(80))
+
+		# Detailed logs - ONLY FOR FAILED TESTS
+		for result in all_results:
+			if not result["success"]:
+				report_lines.append("")
+				report_lines.append("[%s]" % result["name"])
+				report_lines.append("-".repeat(80))
+				for log_line in result["log"]:
+					report_lines.append(log_line)
+
+	# Final failure summary at the very end (easy to find in console)
+	if has_failures:
 		report_lines.append("")
 		report_lines.append("=".repeat(80))
 		report_lines.append("FAILURE SUMMARY")
@@ -141,6 +180,7 @@ func generate_final_report() -> void:
 				failed_tests.append(result)
 
 		report_lines.append("Failed Tests: %d of %d" % [failed_tests.size(), tests_completed])
+		report_lines.append("Total Assertions Failed: %d" % total_failed)
 		report_lines.append("")
 
 		for result in failed_tests:
@@ -155,40 +195,6 @@ func generate_final_report() -> void:
 			for failed in result["failed_assertions"]:
 				report_lines.append("  %s" % failed)
 			report_lines.append("")
-
-	report_lines.append("")
-	report_lines.append("-".repeat(80))
-	report_lines.append("INDIVIDUAL TEST RESULTS")
-	report_lines.append("-".repeat(80))
-
-	# Individual test results
-	for result in all_results:
-		report_lines.append("")
-		report_lines.append("Test: %s" % result["name"])
-		if result["description"]:
-			report_lines.append("  Description: %s" % result["description"])
-		report_lines.append("  Assertions Passed: %d" % result["passed"])
-		report_lines.append("  Assertions Failed: %d" % result["failed"])
-		report_lines.append("  Status: %s" % ("✓ PASSED" if result["success"] else "✗ FAILED"))
-
-		# Show failed assertions
-		if result["failed"] > 0:
-			report_lines.append("  Failed Assertions:")
-			for failed in result["failed_assertions"]:
-				report_lines.append("    - %s" % failed)
-
-	report_lines.append("")
-	report_lines.append("=".repeat(80))
-	report_lines.append("DETAILED LOGS")
-	report_lines.append("=".repeat(80))
-
-	# Detailed logs for each test
-	for result in all_results:
-		report_lines.append("")
-		report_lines.append("[%s]" % result["name"])
-		report_lines.append("-".repeat(80))
-		for log_line in result["log"]:
-			report_lines.append(log_line)
 
 	report_lines.append("")
 	report_lines.append("=".repeat(80))
