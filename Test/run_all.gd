@@ -87,6 +87,20 @@ func generate_final_report() -> void:
 	print("TEST SUITE COMPLETE")
 	print("=".repeat(80))
 
+	# Print quick failure summary to console if there are failures
+	if total_failed > 0:
+		print("\n" + "=".repeat(80))
+		print("QUICK FAILURE SUMMARY")
+		print("=".repeat(80))
+		var failed_test_names = []
+		for result in all_results:
+			if not result["success"]:
+				failed_test_names.append(result["name"])
+		print("Failed %d of %d tests: %s" % [failed_test_names.size(), tests_completed, ", ".join(failed_test_names)])
+		print("Total assertions failed: %d" % total_failed)
+		print("See detailed report below and in TestOutputs/")
+		print("=".repeat(80))
+
 	var report_lines: Array[String] = []
 
 	# Header
@@ -112,6 +126,35 @@ func generate_final_report() -> void:
 		report_lines.append("✓ ALL TESTS PASSED")
 	else:
 		report_lines.append("✗ SOME TESTS FAILED")
+
+	# Failure summary (if any failures)
+	if total_failed > 0:
+		report_lines.append("")
+		report_lines.append("=".repeat(80))
+		report_lines.append("FAILURE SUMMARY")
+		report_lines.append("=".repeat(80))
+		report_lines.append("")
+
+		var failed_tests = []
+		for result in all_results:
+			if not result["success"]:
+				failed_tests.append(result)
+
+		report_lines.append("Failed Tests: %d of %d" % [failed_tests.size(), tests_completed])
+		report_lines.append("")
+
+		for result in failed_tests:
+			report_lines.append("-".repeat(80))
+			report_lines.append("✗ FAILED: %s" % result["name"])
+			report_lines.append("-".repeat(80))
+			if result["description"]:
+				report_lines.append("Description: %s" % result["description"])
+			report_lines.append("Assertions Failed: %d of %d" % [result["failed"], result["total"]])
+			report_lines.append("")
+			report_lines.append("Failed Assertions:")
+			for failed in result["failed_assertions"]:
+				report_lines.append("  %s" % failed)
+			report_lines.append("")
 
 	report_lines.append("")
 	report_lines.append("-".repeat(80))

@@ -89,7 +89,7 @@ func _initialize_terrain_types() -> void:
 ## Get the terrain type at a specific tile position
 func get_terrain_at_tile(tile_pos: Vector2i) -> TerrainType:
 	if not tile_map_layer:
-		push_error("TileMapManager: No TileMapLayer available")
+		# Silently return default terrain when no TileMapLayer (e.g., in tests)
 		return _get_default_terrain()
 
 	# Get the tile data at this position
@@ -111,6 +111,9 @@ func get_terrain_at_tile(tile_pos: Vector2i) -> TerrainType:
 
 ## Get terrain at a world position (converts to tile coordinates)
 func get_terrain_at_world_position(world_pos: Vector2) -> TerrainType:
+	if not tile_map_layer:
+		# No TileMapLayer available, return default terrain
+		return _get_default_terrain()
 	var tile_pos = tile_map_layer.local_to_map(world_pos)
 	return get_terrain_at_tile(tile_pos)
 
